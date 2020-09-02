@@ -1,29 +1,34 @@
 var timer = 256
 var tickRate = 16
 var visualRate = 256
-var resources = { "gold": 0, "sword": 0, "health": 5, "level": 1, "hp": 100 }
+var resources = { "gold": 0, "sword": 0, "monster_health": 5, "level": 1, "hp": 100 }
 var costs = {
 	"sword": 10,
 	"guard": 10,
 	"heal": 5,
+	"hp": 20,
+	"damage": 1 //used to scale damage taken
 }
 var growthRate = {
 	"sword": 1.5,
 	"guard": 1.25,
 	"heal": 1.5,
-	"health": 1.1,
-	"gold": 1.5
+	"monster_health": 1.1,
+	"gold": 1.5,
+	"damage": 1.1,
+	"hp": 1.5
 }
 
 var increments = [{
-	"input": ["guard", "heal"],
+	"input": ["guard", "level", "hp"],
 	"output": "gold"
 }]
 
 var unlocks = {
 	"sword": { "gold": 10 },
 	"guard": { "gold": 20 },
-	"heal": { "gold": 5 }
+	"heal": { "gold": 5 },
+	"hp": { "gold": 20 }
 }
 
 
@@ -35,9 +40,10 @@ function attack(num) {
 	if (monster_health_bar.value <= 0) {
 		resources["gold"] += (num * resources["level"])
 		resources["level"] += 1
-		resources["health"] += 1
-		monster_health_bar.value = (resources["health"])
-		monster_health_bar.max = (resources["health"])
+		resources["monster_health"] += 1
+		costs["damage"] *= growthRate["damage"]
+		monster_health_bar.value = (resources["monster_health"])
+		monster_health_bar.max = (resources["monster_health"])
 	}
 	updateText()
 };
@@ -47,9 +53,11 @@ function attack(num) {
 function heal(num) {
 	if (resources["gold"] >= costs["heal"] * num) {
 		resources["gold"] -= num * costs["heal"]
-		resources["hp"] = 100
+
 		let health_bar = document.getElementById("health_bar")
-		health_bar.value = 100
+		health_bar.value = health_bar.max
+		resources["hp"] = health_bar.max
+
 		costs["heal"] *= growthRate["heal"]
 
 		updateText()
@@ -66,23 +74,18 @@ function upgradesword(num) {
 		updateText()
 	}
 };
-function hireguard(num) { //unused
-	if (resources["gold"] >= costs["guard"] * num) {
-		if (!resources["guard"]) {
-			resources["guard"] = 0
-		}
-		if (!resources["guard_sword"]) {
-			resources["guard_sword"] = 1
-		}
-		resources["guard"] += num
-		resources["gold"] -= num * costs["guard"]
-
-		costs["guard"] *= growthRate["guard"]
+function upgradehp(num) { 
+	if (resources["gold"] >= costs["hp"] * num) {
+		resources["gold"] -= num * costs["hp"]
+		let health_bar = document.getElementById("health_bar")
+		health_bar.max += 10
+		resources["hp"] = health_bar.max
+		health_bar.value = resources["hp"]
+		costs["hp"] *= growthRate["hp"]
 
 		updateText()
-
-
 	}
+
 };
 
 
@@ -132,10 +135,10 @@ window.setInterval(function () {
 	if (timer > visualRate) {
 		timer -= visualRate
 		let health_bar = document.getElementById("health_bar")
-		health_bar.value -= 1.5
-		resources["hp"] -= 1.5
+		health_bar.value -= (costs["damage"])
+		resources["hp"] -= (costs["damage"])
 		updateText()
-		if (resources["hp"] <= 0) {
+		if (health_bar.value <= 0) {
 			alert("You lose!");
 			location.reload();
 		}

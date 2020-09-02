@@ -16,17 +16,20 @@
       <span style="display:none" class="show_guard_sword">Guard Sword Level: <span class="guard_sword"></span></span>
     </div>
     <div class="column">
-      <div class="monster">Monster</div>
+      Monster HP: <span class="monster_health"></span></span>
       <progress id=monster_health_bar class="show_monster_health_bar" value="5" max="5"> </progress>
       <button onClick="attack(1)">Attack</button>
+      <br>
+      <br>
+      HP: <span class="hp"></span></span>
+
+      <progress id=health_bar class="show_health_bar" value="100" max="100"> </progress>
 
       <button style="display:none" class="show_sword" onClick="upgradesword(1)">Upgrade Sword: $<span
           class="sword_cost"></span></button>
-      <button style="display:none" class="show_guard" onClick="hireguard(1)">Hire Guards: $<span
-          class="guard_cost"></span></button>
-      <button style="display:none" class="show_heal" onClick="heal(1)">Heal: $<span
-          class="heal_cost"></span></button>
-      <progress id=health_bar class="show_health_bar" value="100" max="100"> </progress>
+      <button style="display:none" class="show_hp" onClick="upgradehp(1)">Upgrade Max Health: $<span
+          class="hp_cost"></span></button>
+      <button style="display:none" class="show_heal" onClick="heal(1)">Heal: $<span class="heal_cost"></span></button>
 
     </div>
   </div>
