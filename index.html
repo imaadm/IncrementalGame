@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="interface.css" />
+</head>
+
+<body>
+  <script type="text/javascript" src="main.js"></script>
+  <div class="row">
+    <div class="column">
+      Gold: <span class="gold"></span>
+      Level: <span class="level"></span>
+      <span style="display:none" class="show_sword">Sword Level: <span class="sword"></span></span>
+      <span style="display:none" class="show_guard">Guards: <span class="guard"></span></span>
+      <span style="display:none" class="show_guard_sword">Guard Sword Level: <span class="guard_sword"></span></span>
+    </div>
+    <div class="column">
+      <div class="monster">Monster</div>
+      <progress id=monster_health_bar class="show_monster_health_bar" value="5" max="5"> </progress>
+      <button onClick="attack(1)">Attack</button>
+
+      <button style="display:none" class="show_sword" onClick="upgradesword(1)">Upgrade Sword: $<span
+          class="sword_cost"></span></button>
+      <button style="display:none" class="show_guard" onClick="hireguard(1)">Hire Guards: $<span
+          class="guard_cost"></span></button>
+      <button style="display:none" class="show_heal" onClick="heal(1)">Heal: $<span
+          class="heal_cost"></span></button>
+      <progress id=health_bar class="show_health_bar" value="100" max="100"> </progress>
+
+    </div>
+  </div>
+</body>
+
+</html>
