@@ -21,6 +21,8 @@ button:active {
   float: left;
   width: 50%;
 }
+
+/* these are all used to properly color the health bars in different browsers */
 #monster_health_bar {
   -webkit-appearance: none;
   appearance: none;
