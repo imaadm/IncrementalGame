@@ -1,7 +1,7 @@
 var timer = 256
 var tickRate = 16
 var visualRate = 256
-var resources = { "gold": 0, "sword": 0, "monster_health": 5, "level": 1, "hp": 100 }
+var resources = { "gold": 0, "sword": 0, "monster_health": 5, "stage": 1, "hp": 100 }
 var costs = {
 	"sword": 10,
 	"heal": 5,
@@ -10,15 +10,15 @@ var costs = {
 }
 var growthRate = {
 	"sword": 1.5,
-	"heal": 1.5,
+	"heal": 1.1,
 	"monster_health": 1.1,
 	"gold": 1.5,
 	"damage": 1.1,
-	"hp": 1.5
+	"hp": 1.75
 }
 /* this is used to automate gold income. Currently there is no passive gold income
 var increments = [{
-	"input": [ "level", "hp"],
+	"input": [ "stage", "hp"],
 	"output": "gold"
 }]
 */
@@ -34,13 +34,14 @@ function attack(num) { //calculates
 	var strength = 1 + (resources["sword"]); //damage that each attack does
 
 	let monster_health_bar = document.getElementById("monster_health_bar")
-	monster_health_bar.value -= strength //updates monster health bar
-
+	monster_health_bar.value -= strength 
+	resources["monster_health"] -= strength //updates monster health bar
 	if (monster_health_bar.value <= 0) {
-		resources["gold"] += (num * resources["level"]) //gold gain that scales w/ level
-		resources["level"] += 1
-		resources["monster_health"] += 1
+		resources["gold"] += (num * resources["stage"]) //gold gain that scales w/ each stage
+		resources["stage"] += 1
+		resources["monster_health"] = (monster_health_bar.max + 1) 
 		costs["damage"] *= growthRate["damage"] //increases damage that next monster does
+		costs["heal"] *= growthRate["heal"] //increasing heal cost
 		monster_health_bar.value = (resources["monster_health"])
 		monster_health_bar.max = (resources["monster_health"]) //resets monster healthbar with new max
 	} // updates to variables after monster is slain
@@ -59,7 +60,6 @@ function heal(num) {
 		resources["hp"] = health_bar.max 
 		//resets health to max
 
-		costs["heal"] *= growthRate["heal"]
 
 		updateText()
 	}
@@ -80,7 +80,7 @@ function upgradehp(num) {
 		resources["gold"] -= num * costs["hp"]
 
 		let health_bar = document.getElementById("health_bar")
-		health_bar.max += 10
+		health_bar.max += 20
 		resources["hp"] = health_bar.max
 		health_bar.value = resources["hp"] 
 		//sets new maximum and updates health bar
@@ -146,7 +146,7 @@ window.setInterval(function () {
 
 		updateText()
 		if (health_bar.value <= 0) {
-			alert("You lose!");
+			alert("You lose! High score: Stage " + resources["stage"]);
 			location.reload();
 		}
 
