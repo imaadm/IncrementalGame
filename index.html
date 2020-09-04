@@ -10,8 +10,9 @@
   <div class="row">
     <div class="column">
       Gold: <span class="gold"></span>
+      XP: <span class="xp"></span>
       Stage: <span class="stage"></span>
-      <span style="display:none" class="show_sword">Sword Level: <span class="sword"></span></span>
+      <span style="display:none" class="show_sword">Strength: <span class="sword"></span></span>
 
     </div>
     <div class="column">
@@ -26,9 +27,9 @@
       HP: <span class="hp"></span></span>
       <progress id=health_bar class="show_health_bar" value="100" max="100"> </progress>
 
-      <button style="display:none" class="show_sword" onClick="upgradesword(1)">Upgrade Sword: $<span class="sword_cost"></span></button>
-      <button style="display:none" class="show_hp" onClick="upgradehp(1)">Upgrade Max Health: $<span class="hp_cost"></span></button>
-      <button style="display:none" class="show_heal" onClick="heal(1)">Heal: $<span class="heal_cost"></span></button>
+      <button style="display:none" class="show_sword" onClick="upgradesword(1)">Upgrade Strength: <span class="sword_cost"></span> XP</button>
+      <button style="display:none" class="show_hp" onClick="upgradehp(1)">Upgrade Vitality: <span class="hp_cost"> </span> XP</button>
+      <button style="display:none" class="show_heal" onClick="heal(1)">Potion: $<span class="heal_cost"></span></button>
 
     </div>
   </div>
