@@ -4,17 +4,17 @@ var visualRate = 256
 var resources = { "gold": 0, "xp": 0, "sword": 0, "monster_health": 5, "stage": 1, "hp": 100, "goldrate": 1 }
 var costs = {
 	"sword": 10, //attack upgrade
-	"heal": 5, //potion
-	"hp": 15, //maxhp upgrade
+	"heal": 10, //potion
+	"hp": 10, //maxhp upgrade
 	"damage": 1, //used to scale damage taken
 }
 var growthRate = {
-	"sword": 1.5,
-	"heal": 1.1,
-	"monster_health": 1.1,
-	"gold": 1.5,
-	"damage": 1.10,
-	"hp": 1.75
+	"sword": 1.50,
+	"heal": 1.15,
+	"hp": 1.50, 
+	"monster_health": 1.10,
+	"gold": 1.25, 
+	"damage": 1.10
 }
 // this is used to automate gold income.
 var increments = [{
@@ -23,9 +23,9 @@ var increments = [{
 }]
 
 var unlocks = {
-	"sword": { "gold": 0 },
+	"sword": { "xp": 0 },
 	"heal": { "gold": 0 },
-	"hp": { "gold": 0 }
+	"hp": { "xp": 0 }
 }
 
 
@@ -37,10 +37,10 @@ function attack(num) { //calculates
 	monster_health_bar.value -= strength 
 	resources["monster_health"] -= strength //updates monster health bar
 	if (monster_health_bar.value <= 0) {
-		resources["gold"] += (num * resources["stage"]) //gold gain that scales w/ each stage
-		resources["xp"] += 1
+		resources["xp"] += (num * resources["stage"]) //xp gain that scales w/ each stage
 		resources["stage"] += 1
 		resources["monster_health"] = (monster_health_bar.max + 1) 
+		resources["gold"] += (resources["stage"]*growthRate["gold"]) //gold gain that scales w/ each stage
 		costs["damage"] *= growthRate["damage"] //increases damage that next monster does
 		costs["heal"] *= growthRate["heal"] //increasing heal cost
 		monster_health_bar.value = (resources["monster_health"])
