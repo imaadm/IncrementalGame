@@ -16,11 +16,21 @@ button:hover {
 button:active {
   background-color: #ececec;
 }
-
-.column {
-  float: left;
-  width: 50%;
+.interface {
+  text-align: center;
 }
+.stats {
+  text-align: left;
+}
+
+.combat {
+  text-align: center;
+}
+
+.town {
+  text-align: center;
+}
+
 
 /* these are all used to properly color the health bars in different browsers */
 #monster_health_bar {

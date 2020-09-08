@@ -7,31 +7,41 @@
 
 <body>
   <script type="text/javascript" src="main.js"></script>
-  <div class="row">
-    <div class="column">
+  <div class="interface">
+    <div class="stats">
       Gold: <span class="gold"></span>
       XP: <span class="xp"></span>
+      <br>
       Stage: <span class="stage"></span>
       <span style="display:none" class="show_sword">Strength: <span class="sword"></span></span>
 
     </div>
-    <div class="column">
+    <div class="combat">
 
-      Monster HP: <span class="monster_health"></span></span>
+      <span id = "monster_health">Monster HP: <span class="monster_health"></span></span> <br>
       <progress id=monster_health_bar class="show_monster_health_bar" value="5" max="5"> </progress>
-      <button onClick="attack(1)">Attack</button>
-
       <br>
+      <button id="attack_button" style="text-align: center;" onClick="attack(1)">Attack</button>
       <br>
-
-      HP: <span class="hp"></span></span>
+      HP: <span class="hp"></span></span> <br>
       <progress id=health_bar class="show_health_bar" value="100" max="100"> </progress>
-
-      <button style="display:none" class="show_sword" onClick="upgradesword(1)">Upgrade Strength: <span class="sword_cost"></span> XP</button>
-      <button style="display:none" class="show_hp" onClick="upgradehp(1)">Upgrade Vitality: <span class="hp_cost"> </span> XP</button>
-      <button style="display:none" class="show_heal" onClick="heal(1)">Potion: $<span class="heal_cost"></span></button>
-
+      <div class="buttons">
+        <button onClick="heal(1)">Potion: $<span class="heal_cost"></span></button>
+        <br>
+        <button onClick="upgradesword(1)">Upgrade Strength: <span class="sword_cost"></span> XP</button>
+        <br>
+        <button onClick="upgradehp(1)">Upgrade Vitality: <span class="hp_cost"></span> XP</button>
+      </div>
     </div>
+  </div>
+  <div style="display:none" class="town" id="town">
+  <p> As thanks for your monster slaying, the townspeople offer a reward of
+      your choice and refresh your health: </p>
+    <div id="rewards">
+      <button onClick="townSword()">Diamond Sword</button>
+      <button onClick="townLife()">Life Crystal</button>
+      <button onClick="townXP()">XP Flask</button>
+    </p>
   </div>
 </body>
 
