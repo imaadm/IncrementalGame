@@ -1,20 +1,21 @@
 var timer = 256
 var tickRate = 16
 var visualRate = 256
-var resources = { "gold": 0, "xp": 0, "sword": 0, "monster_health": 5, "stage": 24, "hp": 100, "goldrate": 1 }
+var resources = { "gold": 0, "xp": 0, "sword": 0, "monster_health": 5, "stage": 0, "hp": 100, "goldrate": 1 }
 var costs = {
 	"sword": 10, //attack upgrade
 	"heal": 10, //potion
 	"hp": 10, //maxhp upgrade
 	"damage": 1, //used to scale damage taken
+	"armor": 500 //armor cost from town
 }
 var growthRate = {
 	"sword": 1.50,
-	"heal": 1.15,
+	"heal": 1.05,
 	"hp": 1.50,
 	"monster_health": 1.10,
 	"gold": 1.25,
-	"damage": 1.05
+	"damage": 1.08
 }
 // this is used to automate gold income.
 var increments = [{
@@ -23,23 +24,20 @@ var increments = [{
 }]
 
 var unlocks = {
-//	"sword": { "xp": 0 },
-//	"heal": { "gold": 0 },
-//	"hp": { "xp": 0 },
 	"town": { "stage": 25 },
 	"boss": { "stage": 50 }
 }
 
 
 
-function attack(num) {
+function attack() {
 	var strength = 1 + (resources["sword"]); //damage that each attack does
 
 	let monster_health_bar = document.getElementById("monster_health_bar")
 	monster_health_bar.value -= strength
 	resources["monster_health"] -= strength //updates monster health bar
 	if (monster_health_bar.value <= 0) {
-		resources["xp"] += (num * resources["stage"]) //xp gain that scales w/ each stage
+		resources["xp"] += (resources["stage"]) //xp gain that scales w/ each stage
 		resources["stage"] += 1
 		resources["monster_health"] = (monster_health_bar.max + 1)
 		resources["gold"] += (resources["stage"] * growthRate["gold"]) //gold gain that scales w/ each stage
@@ -47,10 +45,13 @@ function attack(num) {
 		costs["heal"] *= growthRate["heal"] //increasing heal cost
 		monster_health_bar.value = (resources["monster_health"])
 		monster_health_bar.max = (resources["monster_health"]) //resets monster healthbar with new max
-		if (resources["stage"] == 25) //town phase {
+		if (resources["stage"] == 25) { //town phase
 			alert("You've arrived at a town!");
-		showTown();
-
+			showTown();
+			let health_bar = document.getElementById("health_bar")
+			health_bar.value = health_bar.max
+			resources["hp"] = health_bar.max //restoring health
+		}
 	} // updates to variables after monster is slain
 	updateText()
 
@@ -58,9 +59,9 @@ function attack(num) {
 
 
 
-function heal(num) {
-	if (resources["gold"] >= costs["heal"] * num) {
-		resources["gold"] -= num * costs["heal"]
+function heal() {
+	if (resources["gold"] >= costs["heal"]) {
+		resources["gold"] -= costs["heal"]
 
 		let health_bar = document.getElementById("health_bar")
 		health_bar.value = health_bar.max
@@ -72,22 +73,22 @@ function heal(num) {
 	}
 };
 
-function upgradesword(num) {
-	if (resources["xp"] >= costs["sword"] * num) {
-		resources["sword"] += num
-		resources["xp"] -= num * costs["sword"]
+function upgradesword() {
+	if (resources["xp"] >= costs["sword"]) {
+		resources["sword"] += 1
+		resources["xp"] -= costs["sword"]
 
 		costs["sword"] *= growthRate["sword"]
 
 		updateText()
 	}
 };
-function upgradehp(num) {
-	if (resources["xp"] >= costs["hp"] * num) {
-		resources["xp"] -= num * costs["hp"]
+function upgradehp() {
+	if (resources["xp"] >= costs["hp"]) {
+		resources["xp"] -= costs["hp"]
 
 		let health_bar = document.getElementById("health_bar")
-		health_bar.max += 20
+		health_bar.max += 25
 		resources["hp"] = health_bar.max
 		health_bar.value = resources["hp"]
 		//sets new maximum and updates health bar
@@ -99,13 +100,62 @@ function upgradehp(num) {
 
 };
 
+
+function townSword() //sword damage upgrade
+{
+	resources["sword"] += 10
+	leaveTown();
+
+}
+
+function townLife() //max hp upgrade 
+{
+	let health_bar = document.getElementById("health_bar")
+	health_bar.max += 100
+	resources["hp"] = health_bar.max
+	health_bar.value = resources["hp"]
+	updateText()
+	leaveTown();
+
+}
+
+function townXP() //xp bonus
+{
+	resources["xp"] += 200
+	leaveTown();
+}
+
+function townArmor() //damage reduction purchase
+{
+	if (resources["gold"] >= costs["armor"]) {
+		resources["gold"] -= costs["armor"]
+		growthRate["damage"] = 1.07
+		document.getElementById("armor").style.display = "inline"
+		updateText()
+	}
+}
+
+function leaveTown() {
+	hideTown();
+	alert("You leave town and go back to slaying monsters.")
+	resources["stage"] += 1
+
+}
+
+
 function showTown() {
 	document.getElementById("town").style.display = "inline"
 	document.getElementById("monster_health").style.display = "none"
-	document.getElementById("monster_health_bar").style.display= "none"
+	document.getElementById("monster_health_bar").style.display = "none"
 	document.getElementById("attack_button").style.display = "none"
 }
 
+function hideTown() {
+	document.getElementById("town").style.display = "none"
+	document.getElementById("monster_health").style.display = "inline"
+	document.getElementById("monster_health_bar").style.display = "inline"
+	document.getElementById("attack_button").style.display = "inline"
+}
 
 
 function updateText() {
@@ -132,21 +182,6 @@ function updateText() {
 		}
 	}
 };
-
-function townSword() //sword base damage upgrade
-{
-
-}
-
-function townLife() //max hp upgrade 
-{
-
-}
-
-function townXP() //xp bonus
-{
-
-}
 
 window.setInterval(function () {
 

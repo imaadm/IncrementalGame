@@ -1,4 +1,4 @@
-button {
+button{
   background-color: #ffffff;
   border: none;
   color: black;
@@ -20,7 +20,7 @@ button:active {
   text-align: center;
 }
 .stats {
-  text-align: left;
+  text-align: center;
 }
 
 .combat {
@@ -29,6 +29,10 @@ button:active {
 
 .town {
   text-align: center;
+}
+.town button {
+  width: 10%;
+
 }
 
 

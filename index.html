@@ -13,12 +13,16 @@
       XP: <span class="xp"></span>
       <br>
       Stage: <span class="stage"></span>
-      <span style="display:none" class="show_sword">Strength: <span class="sword"></span></span>
+      <br>
+      <span class="show_sword">Strength: <span class="sword"></span></span>
+      <br>
+      <span id="armor" style="display: none;">Iron Armor</span>
 
     </div>
+    <br>
     <div class="combat">
 
-      <span id = "monster_health">Monster HP: <span class="monster_health"></span></span> <br>
+      <span id="monster_health">Monster HP: <span class="monster_health"></span></span> <br>
       <progress id=monster_health_bar class="show_monster_health_bar" value="5" max="5"> </progress>
       <br>
       <button id="attack_button" style="text-align: center;" onClick="attack(1)">Attack</button>
@@ -26,23 +30,32 @@
       HP: <span class="hp"></span></span> <br>
       <progress id=health_bar class="show_health_bar" value="100" max="100"> </progress>
       <div class="buttons">
-        <button onClick="heal(1)">Potion: $<span class="heal_cost"></span></button>
+        <button onClick="heal()">Potion: $<span class="heal_cost"></span></button>
         <br>
-        <button onClick="upgradesword(1)">Upgrade Strength: <span class="sword_cost"></span> XP</button>
+        <button onClick="upgradesword()">Upgrade Strength: <span class="sword_cost"></span> XP</button>
         <br>
-        <button onClick="upgradehp(1)">Upgrade Vitality: <span class="hp_cost"></span> XP</button>
+        <button onClick="upgradehp()">Upgrade Vitality: <span class="hp_cost"></span> XP</button>
       </div>
     </div>
   </div>
   <div style="display:none" class="town" id="town">
-  <p> As thanks for your monster slaying, the townspeople offer a reward of
-      your choice and refresh your health: </p>
+    <hr>
+    <div id="blacksmith">
+      <h3>Village</h3>
+      <button onClick="townArmor()">Purchase Armor: $<span class="armor_cost"></span> </button>
+    </div>
+    <hr style="width: 55%;">
+    <p> As thanks for your monster slaying, the townspeople offer a reward of
+      your choice and refresh your health (Selecting an option will cause you to leave town): </p>
     <div id="rewards">
       <button onClick="townSword()">Diamond Sword</button>
       <button onClick="townLife()">Life Crystal</button>
       <button onClick="townXP()">XP Flask</button>
-    </p>
+    </div>
+    <hr>
+   
   </div>
+
 </body>
 
 </html>
