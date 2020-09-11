@@ -11,6 +11,7 @@
     <div class="stats">
       Gold: <span class="gold"></span>
       XP: <span class="xp"></span>
+     <div id="mana" style="display: none;">Mana: <span id="mana" class="mana"> </span></div> 
       <br>
       <span class="show_sword">Strength: <span class="sword"></span></span>
       <br>
@@ -21,7 +22,7 @@
     </div>
     <br>
     <div id="boss" style="display: none;" class="boss" >
-      <span id="timer" style="color: red; font-size: x-large;"><b>60</b></span>
+      <span id="timer" style="color: red; font-size: x-large;"><b>30</b></span>
       <br>
     </div>
     <div class="combat">
@@ -29,7 +30,9 @@
       <span id="monster_health">Monster HP: <span class="monster_health"></span></span> <br>
       <progress id=monster_health_bar class="show_monster_health_bar" value="5" max="5"> </progress>
       <br>
-      <button id="attack_button" style="text-align: center;" onClick="attack(1)">Attack</button>
+      <button id="attack" style="text-align: center;" onClick="attack()">Attack</button>
+      <button id="fireball" style="text-align: center; display: none;" onClick="fireball()">Fireball</button>
+
       <br>
       HP: <span class="hp"></span></span> <br>
       <progress id=health_bar class="show_health_bar" value="100" max="100"> </progress>
@@ -47,6 +50,8 @@
     <div id="blacksmith">
       <h3>Village</h3>
       <button onClick="townArmor()">Purchase Armor: $<span class="armor_cost"></span> </button>
+      <button onClick="townLifesteal()">Purchase Lifesteal Enchant: $<span class="lifesteal_cost"></span> </button>
+
     </div>
     <hr style="width: 55%;">
     <p> As thanks for your monster slaying, the townspeople offer a reward of
