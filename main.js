@@ -1,7 +1,7 @@
 var timer = 256
 var tickRate = 16
 var visualRate = 256
-var resources = { "gold": 0, "xp": 0, "sword": 0, "monster_health": 5, "stage": 0, "hp": 100, "goldrate": 1 }
+var resources = { "gold": 0, "xp": 0, "sword": 0, "monster_health": 5, "stage": 49, "hp": 100, "goldrate": 1 }
 var costs = {
 	"sword": 10, //attack upgrade
 	"heal": 10, //potion
@@ -11,7 +11,7 @@ var costs = {
 }
 var growthRate = {
 	"sword": 1.50,
-	"heal": 1.05,
+	"heal": 1.075,
 	"hp": 1.50,
 	"monster_health": 1.10,
 	"gold": 1.25,
@@ -38,11 +38,21 @@ function attack() {
 	resources["monster_health"] -= strength //updates monster health bar
 	if (monster_health_bar.value <= 0) {
 		resources["xp"] += (resources["stage"]) //xp gain that scales w/ each stage
-		resources["stage"] += 1
-		resources["monster_health"] = (monster_health_bar.max + 1)
 		resources["gold"] += (resources["stage"] * growthRate["gold"]) //gold gain that scales w/ each stage
 		costs["damage"] *= growthRate["damage"] //increases damage that next monster does
 		costs["heal"] *= growthRate["heal"] //increasing heal cost
+		resources["stage"] += 1
+		
+		if (resources["stage"] == 50)
+		{
+			resources["monster_health"] = 999
+			monster_health_bar.value = (resources["monster_health"])
+			monster_health_bar.max = (resources["monster_health"]) //resets monster healthbar with new max
+			alert("Boss battle! Defeat the dragon before he burns you down!");
+			showBoss();
+		}
+		resources["monster_health"] = (monster_health_bar.max + 1)
+	
 		monster_health_bar.value = (resources["monster_health"])
 		monster_health_bar.max = (resources["monster_health"]) //resets monster healthbar with new max
 		if (resources["stage"] == 25) { //town phase
@@ -52,8 +62,9 @@ function attack() {
 			health_bar.value = health_bar.max
 			resources["hp"] = health_bar.max //restoring health
 		}
+		updateText()
+
 	} // updates to variables after monster is slain
-	updateText()
 
 };
 
@@ -135,6 +146,8 @@ function townArmor() //damage reduction purchase
 	}
 }
 
+
+
 function leaveTown() {
 	hideTown();
 	alert("You leave town and go back to slaying monsters.")
@@ -155,6 +168,34 @@ function hideTown() {
 	document.getElementById("monster_health").style.display = "inline"
 	document.getElementById("monster_health_bar").style.display = "inline"
 	document.getElementById("attack_button").style.display = "inline"
+}
+
+function showBoss() {
+	document.getElementById("boss").style.display = "inline"
+
+	let health_bar = document.getElementById("health_bar")
+		
+	document.getElementById("boss").style.display= "inline"
+	var timeLeft = 60
+
+	var bossTimer = setInterval(function() {
+		timeLeft--
+		document.getElementById("timer").innerHTML = timeLeft
+
+		if (timeLeft % 10 == 0)
+		{
+			resources["hp"] -= 50
+			health_bar.value = resources["hp"]
+		}
+
+		if (timeLeft == 0)
+		{
+			resources["hp"] = 0
+			health_bar.value = resources["hp"]
+		}
+		
+	}, 1000)
+
 }
 
 
@@ -189,6 +230,7 @@ window.setInterval(function () {
 	if (resources["stage"] != 25) {
 
 		timer += tickRate
+		
 		// this block is used for calculating passive gold
 		for (var increment of increments) {
 			total = 1
@@ -201,15 +243,18 @@ window.setInterval(function () {
 				resources[increment["output"]] += total / tickRate
 			}
 		}
+		
 	}
-	if (timer > visualRate && resources["stage"] != 25) {
+	if (timer > visualRate && (resources["stage"] != 25 )) {
 		timer -= visualRate
 
+		if (resources["stage"] != 50)
+		{
 		let health_bar = document.getElementById("health_bar")
 		health_bar.value -= (costs["damage"])
 		resources["hp"] -= (costs["damage"])
 		//constant damage taken from monster
-
+		}
 		updateText()
 		if (health_bar.value <= 0) {
 			alert("You lose! High score: Stage " + resources["stage"]);
