@@ -52,3 +52,20 @@
   background-color: rgb(0, 255, 0) !important;
   
 }
+
+
+#mana_bar {
+  -webkit-appearance: none;
+  appearance: none;
+  color: blue;
+}
+#mana_bar::-webkit-progress-bar {
+    background: whitesmoke;
+  }
+#mana_bar::-webkit-progress-value {
+  background-color: blue;
+}
+#mana_bar::-moz-progress-bar {
+  background-color: blue !important;
+  
+}

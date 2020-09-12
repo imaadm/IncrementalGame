@@ -1,23 +1,23 @@
 var timer = 256
 var tickRate = 16
 var visualRate = 256
-var resources = { "gold": 0, "xp": 0, "sword": 0, "monster_health": 5, "stage": 1, "hp": 100, "goldrate": 1, "mana": 0.5, "lifesteal": 0 }
+var resources = { "gold": 0, "xp": 0, "sword": 1, "monster_health": 5, "stage": 1, "hp": 100, "goldrate": 1, "mana": 1, "lifesteal": 0 }
 var costs = {
-	"sword": 10, //attack upgrade
+	"sword": 12.50, //attack upgrade
 	"heal": 10, //potion
 	"hp": 10, //maxhp upgrade
 	"damage": 1, //used to scale damage taken
-	"armor": 425, //armor cost from town
+	"armor": 400, //armor cost from town
 	"fireball": 50, //fireball cost
 	"lifesteal": 450 //lifesteal enchant
 }
 var growthRate = {
-	"sword": 1.75,
+	"sword": 1.65,
 	"heal": 1.070,
 	"hp": 1.50,
 	"monster_health": 1.10,
 	"gold": 1.25,
-	"damage": 1.10
+	"damage": 1.09075
 }
 // this is used to automate gold income.
 var increments = [{
@@ -33,7 +33,7 @@ var unlocks = {
 
 
 function attack() {
-	var strength = 1 + (resources["sword"]); //damage that each attack does
+	var strength = (resources["sword"]); //damage that each attack does
 
 	let monster_health_bar = document.getElementById("monster_health_bar")
 	monster_health_bar.value -= strength
@@ -64,7 +64,7 @@ function attack() {
 		if (resources["stage"] == 25) { //town phase
 			alert("You've arrived at a town!");
 			showTown();
-			growthRate["damage"] -= .03
+			growthRate["damage"] -= .025
 			let health_bar = document.getElementById("health_bar")
 			health_bar.value = health_bar.max
 			resources["hp"] = health_bar.max //restoring health
@@ -93,13 +93,16 @@ function bossAttack() {
 
 		hideBoss()
 		document.getElementById("attack").onclick = function () { attack() }
-		alert("The dragon's death infuses you with its power, increasing health and granting magical powers.");
+		alert("The dragon's death infuses you with its power, increasing health and granting magical powers. It also drops a gold charm!");
+		document.getElementById("luckCharm").style="inline"
 		showMana()
-		growthRate["damage"] -= .02
-		growthRate["heal"] -= .02
+		growthRate["damage"] -= .03
+		growthRate["heal"] -= .04
+		growthRate["gold"] = 1.50
 		resources["stage"] += 1
+		resources["gold"] += 250
 		let health_bar = document.getElementById("health_bar")
-		health_bar.max += 100
+		health_bar.max += 200
 		resources["hp"] = health_bar.max
 		health_bar.value = resources["hp"]
 
@@ -110,12 +113,11 @@ function bossAttack() {
 
 function lifesteal() {
 	let health_bar = document.getElementById("health_bar")
-
-	if ((resources["hp"] += (health_bar.max * 0.025)) <= health_bar.max) { //heal on monster death
-		resources["hp"] += (health_bar.max * 0.025)
+	if ((resources["hp"] += (health_bar.max * 0.050)) <= health_bar.max) { //heal on monster death
+		resources["hp"] += (health_bar.max * 0.050)
 		health_bar.value = resources["hp"]
 	}
-	if ((resources["hp"] += (health_bar.max * 0.025)) > health_bar.max) {
+	if ((resources["hp"] += (health_bar.max * 0.050)) > health_bar.max) {
 		resources["hp"] = health_bar.max
 		health_bar.value = resources["hp"]
 	}
@@ -137,11 +139,17 @@ function heal() {
 
 function fireball() {
 	if (resources["mana"] >= costs["fireball"]) {
+		let mana_bar = document.getElementById("mana_bar")
 		resources["mana"] -= costs["fireball"]
+		mana_bar.value -= costs["fireball"]
+
 		let monster_health_bar = document.getElementById("monster_health_bar")
 		var strength = monster_health_bar.max
 		monster_health_bar.value -= strength
 		if (monster_health_bar.value <= 0) {
+			if (resources["lifesteal"] == 1) {
+				lifesteal();
+			}
 			resources["xp"] += (resources["stage"]) //xp gain that scales w/ each stage
 			resources["gold"] += (resources["stage"] * growthRate["gold"]) //gold gain that scales w/ each stage
 			costs["damage"] *= growthRate["damage"] //increases damage that next monster does
@@ -177,9 +185,7 @@ function upgradehp() {
 			health_bar.max += 25
 		if (resources["stage"] >= 25 && resources["stage"] <= 50)
 			health_bar.max += 50
-		if (resources["stage"] > 50)
-			health_bar.max += 75
-
+	
 		resources["hp"] += (health_bar.max * 0.5)
 		if (resources["hp"] > health_bar.max)
 			resources["hp"] = health_bar.max
@@ -196,7 +202,9 @@ function upgradehp() {
 
 function townSword() //sword damage upgrade
 {
-	resources["sword"] += 5
+	resources["sword"] += 4
+	document.getElementById("diamondSword").style.display = "inline"
+		updateText()
 	leaveTown();
 
 }
@@ -204,7 +212,7 @@ function townSword() //sword damage upgrade
 function townLife() //max hp upgrade 
 {
 	let health_bar = document.getElementById("health_bar")
-	health_bar.max += 100
+	health_bar.max += 200
 	resources["hp"] = health_bar.max
 	health_bar.value = resources["hp"]
 	updateText()
@@ -214,7 +222,7 @@ function townLife() //max hp upgrade
 
 function townXP() //xp bonus
 {
-	resources["xp"] += 200
+	resources["xp"] += 250
 	leaveTown();
 }
 
@@ -223,6 +231,7 @@ function townLifesteal() //damage reduction purchase
 	if (resources["gold"] >= costs["lifesteal"]) {
 		resources["gold"] -= costs["lifesteal"]
 		resources["lifesteal"] = 1
+		growthRate["damage"] -= .010
 		updateText()
 	}
 }
@@ -231,7 +240,7 @@ function townArmor() //damage reduction purchase
 {
 	if (resources["gold"] >= costs["armor"]) {
 		resources["gold"] -= costs["armor"]
-		growthRate["damage"] -= .03
+		growthRate["damage"] -= .020
 		document.getElementById("armor").style.display = "inline"
 		updateText()
 	}
@@ -277,7 +286,7 @@ function showBoss() {
 		timeLeft--
 		document.getElementById("timer").innerHTML = timeLeft
 		if (resources["stage"] == 50) {
-			if (timeLeft % 10 == 0) {
+			if (timeLeft % 6 == 0) {
 				resources["hp"] -= 75
 				health_bar.value = resources["hp"]
 			}
@@ -301,7 +310,7 @@ function hideBoss() {
 
 function showMana() {
 	resources["mana"] = 100
-	document.getElementById("mana").style.display = "inline"
+	document.getElementById("mana_bar").style.display = "inline"
 	document.getElementById("fireball").style.display = "inline"
 
 }
@@ -349,12 +358,8 @@ window.setInterval(function () {
 			if (total) {
 				console.log(total)
 				resources[increment["output"]] += total / tickRate
-				if (resources["mana"] < 100) {
-					resources["mana"] += (total / tickRate)
-				}
-				if (resources["mana"] > 100) {
-					resources["mana"] = 100
-				}
+
+				
 
 			}
 		}
@@ -362,6 +367,17 @@ window.setInterval(function () {
 	}
 	if (timer > visualRate && (resources["stage"] != 25)) {
 		timer -= visualRate
+
+		let mana_bar = document.getElementById("mana_bar")
+
+				if (resources["mana"] < 100) {
+					resources["mana"] += 2
+					mana_bar.value += 2
+				}
+				if (resources["mana"] > 100) {
+					resources["mana"] = 100
+					mana_bar.value = resources["mana"]
+				}
 
 		if (resources["stage"] != 50) {
 			let health_bar = document.getElementById("health_bar")

@@ -2,7 +2,8 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="interface.css" />
 </head>
 
@@ -10,19 +11,23 @@
   <script type="text/javascript" src="main.js"></script>
   <div class="interface">
     <div class="stats">
-    <span class="text-warning font-weight-bold">  Gold: <span class="gold"></span> </span>
-     <span class="text-success font-weight-bold"> XP: <span class="xp"></span></span>
-     <div class="text-primary" id="mana" style="display: none;">Mana: <span id="mana" class="mana"> </span></div> 
+      <span class="text-warning font-weight-bold"> Gold: <span class="gold"></span> </span>
+      <span class="text-success font-weight-bold"> XP: <span class="xp"></span></span>
       <br>
       <span class="text-danger show_sword">Strength: <span class="sword"></span></span>
-      <br>
-      <span class="text-secondary" id="armor" style="display: none;">Iron Armor</span>
+      <span class="text-secondary" id="armor" style="display: none;"> <br>
+        Iron Armor</span>
+        <span class="text-primary" id="diamondSword" style="display: none;"> <br>
+          Diamond Sword</span>
+          <span class="text-warning" id="luckCharm" style="display: none;"> <br>
+            Gold Charm</span>
       <br>
       <span class="text-info"> Stage: <span class="stage"></span> </span>
-
+          <br>
+          <span class = "damage_cost"></span>
     </div>
     <br>
-    <div id="boss" style="display: none;" class="boss" >
+    <div id="boss" style="display: none;" class="boss">
       <img src="dragonBoss.jpg" alt="boss" width="175" height="125">
       <br>
       <span id="timer" class="text-danger font-weight-bold" style=" font-size: x-large;"><b>30</b></span>
@@ -33,18 +38,25 @@
       <span id="monster_health">Monster HP: <span class="monster_health"></span></span> <br>
       <progress id=monster_health_bar class="show_monster_health_bar" value="5" max="5"> </progress>
       <br>
-      <button type="button" class="my-1 btn btn-danger" id="attack" style="text-align: center;" onClick="attack()">Attack</button>
-      <button type="button" class="btn btn-primary" id="fireball" style="text-align: center; display: none;" onClick="fireball()">Fireball</button>
+      <button type="button" class="my-1 btn btn-danger" id="attack" style="text-align: center;"
+        onClick="attack()">Attack</button>
+      <button type="button" class="btn btn-primary" id="fireball" style="text-align: center; display: none;"
+        onClick="fireball()">Fireball</button>
 
       <br>
       HP: <span class="hp"></span></span> <br>
       <progress id=health_bar class="show_health_bar" value="100" max="100"> </progress>
+      <progress id=mana_bar style="display: none;" class="show_mana_bar" value="100" max="100"> </progress>
+
       <div class="buttons">
-        <button type="button" class="my-1 btn btn-success" onClick="heal()">Potion: $<span class="heal_cost"></span></button>
+        <button type="button" class="my-1 btn btn-success" onClick="heal()">Potion: $<span
+            class="heal_cost"></span></button>
         <br>
-        <button type="button" class="my-1 btn btn-info" onClick="upgradesword()">Upgrade Strength: <span class="sword_cost"></span> XP</button>
+        <button type="button" class="my-1 btn btn-info" onClick="upgradesword()">Upgrade Strength: <span
+            class="sword_cost"></span> XP</button>
         <br>
-        <button type="button" class="my-1 btn btn-info" onClick="upgradehp()">Upgrade Vitality: <span class="hp_cost"></span> XP</button>
+        <button type="button" class="my-1 btn btn-info" onClick="upgradehp()">Upgrade Vitality: <span
+            class="hp_cost"></span> XP</button>
       </div>
     </div>
   </div>
@@ -52,8 +64,10 @@
     <hr>
     <div id="blacksmith">
       <h3>Village</h3>
-      <button type="button" class="btn btn-outline-success" onClick="townArmor()">Purchase Armor: $<span class="armor_cost"></span> </button>
-      <button type="button" class="btn btn-outline-success" onClick="townLifesteal()">Purchase Lifesteal Enchant: $<span class="lifesteal_cost"></span> </button>
+      <button type="button" class="btn btn-outline-success" onClick="townArmor()">Purchase Armor: $<span
+          class="armor_cost"></span> </button>
+      <button type="button" class="btn btn-outline-success" onClick="townLifesteal()">Purchase Lifesteal Enchant: $<span
+          class="lifesteal_cost"></span> </button>
 
     </div>
     <hr style="width: 55%;">
@@ -65,11 +79,17 @@
       <button type="button" class="my-1 btn btn-outline-info" onClick="townXP()">XP Flask</button>
     </div>
     <hr>
-   
+
   </div>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
