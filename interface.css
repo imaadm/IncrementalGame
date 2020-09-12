@@ -1,21 +1,6 @@
-button{
-  background-color: #ffffff;
-  border: none;
-  color: black;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-}
 
-button:hover {
-  background-color: #e7e7e7;
-}
 
-button:active {
-  background-color: #ececec;
-}
+
 .interface {
   text-align: center;
 }
@@ -34,6 +19,7 @@ button:active {
   width: 10%;
 
 }
+
 
 
 /* these are all used to properly color the health bars in different browsers */

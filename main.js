@@ -12,7 +12,7 @@ var costs = {
 	"lifesteal": 450 //lifesteal enchant
 }
 var growthRate = {
-	"sword": 1.50,
+	"sword": 1.75,
 	"heal": 1.070,
 	"hp": 1.50,
 	"monster_health": 1.10,
@@ -42,8 +42,8 @@ function attack() {
 		resources["xp"] += (resources["stage"]) //xp gain that scales w/ each stage
 		resources["gold"] += (resources["stage"] * growthRate["gold"]) //gold gain that scales w/ each stage
 
-		if (resources["lifesteal"] == 1) { 
-		lifesteal();
+		if (resources["lifesteal"] == 1) {
+			lifesteal();
 		}
 		costs["damage"] *= growthRate["damage"] //increases damage that next monster does
 		costs["heal"] *= growthRate["heal"] //increasing heal cost
@@ -64,7 +64,7 @@ function attack() {
 		if (resources["stage"] == 25) { //town phase
 			alert("You've arrived at a town!");
 			showTown();
-			growthRate["damage"] -= .02
+			growthRate["damage"] -= .03
 			let health_bar = document.getElementById("health_bar")
 			health_bar.value = health_bar.max
 			resources["hp"] = health_bar.max //restoring health
@@ -96,6 +96,7 @@ function bossAttack() {
 		alert("The dragon's death infuses you with its power, increasing health and granting magical powers.");
 		showMana()
 		growthRate["damage"] -= .02
+		growthRate["heal"] -= .02
 		resources["stage"] += 1
 		let health_bar = document.getElementById("health_bar")
 		health_bar.max += 100
@@ -107,8 +108,7 @@ function bossAttack() {
 	}
 }
 
-function lifesteal()
-{
+function lifesteal() {
 	let health_bar = document.getElementById("health_bar")
 
 	if ((resources["hp"] += (health_bar.max * 0.025)) <= health_bar.max) { //heal on monster death
@@ -179,7 +179,10 @@ function upgradehp() {
 			health_bar.max += 50
 		if (resources["stage"] > 50)
 			health_bar.max += 75
+
 		resources["hp"] += (health_bar.max * 0.5)
+		if (resources["hp"] > health_bar.max)
+			resources["hp"] = health_bar.max
 		health_bar.value = resources["hp"]
 		//sets new maximum and updates health bar
 
@@ -367,8 +370,12 @@ window.setInterval(function () {
 			//constant damage taken from monster
 		}
 		updateText()
-		if (health_bar.value <= 0) {
+		if (health_bar.value <= 0 && resources["stage"] <= 50) {
 			alert("You lose! High score: Stage " + resources["stage"]);
+			location.reload();
+		}
+		if (health_bar.value <= 0 && resources["stage"] > 50) {
+			alert("You've defeated the threat of the dragon, but the monsters never relent. High score: Stage " + resources["stage"]);
 			location.reload();
 		}
 
