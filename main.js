@@ -84,10 +84,12 @@ function bossAttack() {
 	if (monster_health_bar.value <= 0) {
 		resources["xp"] += (resources["stage"]) //xp gain that scales w/ each stage
 		resources["gold"] += (resources["stage"] * growthRate["gold"]) //gold gain that scales w/ each stage
-		//	costs["damage"] *= growthRate["damage"] //increases damage that next monster does
 		costs["heal"] *= growthRate["heal"] //increasing heal cost
+		growthRate["damage"] -= .03
+		growthRate["heal"] -= .04
+		growthRate["gold"] = 1.50
 
-		resources["monster_health"] = resources["stage"] + 5
+		resources["monster_health"] = resources["stage"] + 3
 		monster_health_bar.value = resources["monster_health"]
 		monster_health_bar.max = resources["monster_health"]
 
@@ -96,13 +98,11 @@ function bossAttack() {
 		alert("The dragon's death infuses you with its power, increasing health and granting magical powers. It also drops a gold charm!");
 		document.getElementById("luckCharm").style="inline"
 		showMana()
-		growthRate["damage"] -= .03
-		growthRate["heal"] -= .04
-		growthRate["gold"] = 1.50
+		
 		resources["stage"] += 1
 		resources["gold"] += 250
 		let health_bar = document.getElementById("health_bar")
-		health_bar.max += 200
+		health_bar.max += 250
 		resources["hp"] = health_bar.max
 		health_bar.value = resources["hp"]
 
@@ -258,16 +258,19 @@ function leaveTown() {
 function showTown() {
 	growthRate["heal"] = 1.070
 	document.getElementById("town").style.display = "inline"
-	document.getElementById("monster_health").style.display = "none"
-	document.getElementById("monster_health_bar").style.display = "none"
-	document.getElementById("attack").style.display = "none"
+	document.getElementById("monster").style.display = "none"
+	// document.getElementById("monster_health").style.display = "none"
+	// document.getElementById("monster_health_bar").style.display = "none"
+	// document.getElementById("attack").style.display = "none"
 }
 
 function hideTown() {
 	document.getElementById("town").style.display = "none"
-	document.getElementById("monster_health").style.display = "inline"
-	document.getElementById("monster_health_bar").style.display = "inline"
-	document.getElementById("attack").style.display = "inline"
+	document.getElementById("monster").style.display = "inline"
+
+	// document.getElementById("monster_health").style.display = "inline"
+	// document.getElementById("monster_health_bar").style.display = "inline"
+	// document.getElementById("attack").style.display = "inline"
 }
 
 

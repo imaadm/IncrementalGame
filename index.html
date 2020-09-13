@@ -14,7 +14,7 @@
       <span class="text-warning font-weight-bold"> Gold: <span class="gold"></span> </span>
       <span class="text-success font-weight-bold"> XP: <span class="xp"></span></span>
       <br>
-      <span class="text-danger show_sword">Strength: <span class="sword"></span></span>
+      <span class="text-danger show_sword">Power: <span class="sword"></span></span>
       <span class="text-secondary" id="armor" style="display: none;"> <br>
         Iron Armor</span>
         <span class="text-primary" id="diamondSword" style="display: none;"> <br>
@@ -24,7 +24,7 @@
       <br>
       <span class="text-info"> Stage: <span class="stage"></span> </span>
           <br>
-          <span class = "damage_cost"></span>
+          <!-- <span class = "damage_cost"></span> -->
     </div>
     <br>
     <div id="boss" style="display: none;" class="boss">
@@ -35,6 +35,7 @@
     </div>
     <div class="combat">
 
+      <div id="monster" style="display: inline;">
       <span id="monster_health">Monster HP: <span class="monster_health"></span></span> <br>
       <progress id=monster_health_bar class="show_monster_health_bar" value="5" max="5"> </progress>
       <br>
@@ -42,7 +43,7 @@
         onClick="attack()">Attack</button>
       <button type="button" class="btn btn-primary" id="fireball" style="text-align: center; display: none;"
         onClick="fireball()">Fireball</button>
-
+      </div>
       <br>
       HP: <span class="hp"></span></span> <br>
       <progress id=health_bar class="show_health_bar" value="100" max="100"> </progress>
