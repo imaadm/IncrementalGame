@@ -54,7 +54,7 @@ function attack() {
 			resources["monster_health"] = 999
 			monster_health_bar.value = (resources["monster_health"])
 			monster_health_bar.max = (resources["monster_health"]) //resets monster healthbar with new max
-			alert("Boss battle! Defeat the dragon before he burns you down!");
+			alert("Boss battle! Defeat the dragon before it burns you down!");
 			showBoss();
 		}
 
@@ -77,7 +77,7 @@ function attack() {
 };
 
 function bossAttack() {
-	var strength = 1 + (resources["sword"]); //damage that each attack does
+	var strength = (resources["sword"]); //damage that each attack does
 
 	let monster_health_bar = document.getElementById("monster_health_bar")
 	monster_health_bar.value -= strength
@@ -87,7 +87,7 @@ function bossAttack() {
 		resources["gold"] += (resources["stage"] * growthRate["gold"]) //gold gain that scales w/ each stage
 		costs["heal"] *= growthRate["heal"] //increasing heal cost
 		growthRate["damage"] -= .03
-		growthRate["heal"] -= .035
+		growthRate["heal"] -= .04
 		growthRate["gold"] = 1.50
 
 		resources["monster_health"] = resources["stage"] + 3
@@ -109,7 +109,6 @@ function bossAttack() {
 		resources["hp"] = health_bar.max
 		health_bar.value = resources["hp"]
 
-		document.getElementById("fireball").style = "inline"
 		updateText();
 	}
 }
@@ -261,18 +260,14 @@ function leaveTown() {
 function showTown() {
 	document.getElementById("town").style.display = "inline"
 	document.getElementById("monster").style.display = "none"
-	// document.getElementById("monster_health").style.display = "none"
-	// document.getElementById("monster_health_bar").style.display = "none"
-	// document.getElementById("attack").style.display = "none"
+
 }
 
 function hideTown() {
 	document.getElementById("town").style.display = "none"
 	document.getElementById("monster").style.display = "inline"
 
-	// document.getElementById("monster_health").style.display = "inline"
-	// document.getElementById("monster_health_bar").style.display = "inline"
-	// document.getElementById("attack").style.display = "inline"
+
 }
 
 
@@ -292,7 +287,7 @@ function showBoss() {
 		document.getElementById("timer").innerHTML = timeLeft
 		if (resources["stage"] == 50) {
 			if (timeLeft % 6 == 0) {
-				resources["hp"] -= 75
+				resources["hp"] -= 100
 				health_bar.value = resources["hp"]
 			}
 
@@ -315,7 +310,7 @@ function hideBoss() {
 
 function showMana() {
 	resources["mana"] = 100
-	document.getElementById("mana_bar").style.display = "inline"
+	document.getElementById("mana").style.display = "inline"
 	document.getElementById("fireball").style.display = "inline"
 
 }

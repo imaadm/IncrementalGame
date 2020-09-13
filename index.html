@@ -48,11 +48,11 @@
       <br>
       HP: <span class="hp"></span></span> <br>
       <progress id=health_bar class="show_health_bar" value="100" max="100"> </progress>
-      <progress id=mana_bar style="display: none;" class="show_mana_bar" value="100" max="100"> </progress>
+     <span id = "mana" style="display: none;"> <progress id=mana_bar  class="show_mana_bar" value="100" max="100"> </progress> </span>
 
       <div class="buttons">
-        <button type="button" class="my-1 btn btn-success" onClick="heal()">Potion: $<span
-            class="heal_cost"></span></button>
+        <button type="button" class="my-1 btn btn-success" onClick="heal()">Potion: <span
+            class="heal_cost"></span> Gold</button>
         <br>
         <button type="button" class="my-1 btn btn-info" onClick="upgradesword()">Upgrade Strength: <span
             class="sword_cost"></span> XP</button>
